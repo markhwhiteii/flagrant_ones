@@ -9,7 +9,7 @@ dat <- NULL # initialize
 pinchy_crabs <- read_yaml("teams.yml")$pinchy_crabs
 rivers <- read_yaml("teams.yml")$rivers
 
-dat <- "https://www.basketball-reference.com/leagues/NBA_2018_advanced.html" %>%
+dat <- "https://www.basketball-reference.com/leagues/NBA_2019_advanced.html" %>%
   read_html() %>% 
   html_table() %>% 
   getElement(1) 
