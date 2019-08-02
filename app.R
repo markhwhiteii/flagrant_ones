@@ -7,7 +7,7 @@ library(yaml)
 dat <- NULL # initialize
 
 pinchy_crabs <- read_yaml("teams.yml")$pinchy_crabs
-rivers <- read_yaml("teams.yml")$rivers
+bats <- read_yaml("teams.yml")$bats
 
 dat <- "https://www.basketball-reference.com/leagues/NBA_2019_advanced.html" %>%
   read_html() %>% 
@@ -15,9 +15,9 @@ dat <- "https://www.basketball-reference.com/leagues/NBA_2019_advanced.html" %>%
   getElement(1) 
 
 dat <- dat[, c("Player", "Pos", "MP", "WS")] %>% 
-  filter(Player %in% c(pinchy_crabs, rivers)) %>% 
+  filter(Player %in% c(pinchy_crabs, bats)) %>% 
   transmute(
-    Team = ifelse(Player %in% pinchy_crabs, "Pinchy Crabs", "Rivers"),
+    Team = ifelse(Player %in% pinchy_crabs, "Pinchy Crabs", "Ballin' Bats"),
     Player = Player,
     Position = Pos,
     `Minutes Played` = as.numeric(MP),
@@ -31,7 +31,7 @@ ui <- fluidPage(
       uiOutput("pinchy")
     ),
     column(6,
-      uiOutput("rivers")
+      uiOutput("bats")
     )
   )
    
@@ -70,15 +70,15 @@ server <- function(input, output) {
     }
   })
   
-  output$rivers <- renderUI({
+  output$bats <- renderUI({
     if (!is.null(dat)) {
       tmp <- dat %>% 
-        filter(Team == "Rivers") %>% 
+        filter(Team == "Ballin' Bats") %>% 
         select(-Team) %>% 
         arrange(desc(`Win Shares`))
       
       tagList(
-        h3("Austin Rivers"),
+        h3("Austin Ballin' Bats"),
         h4(
           paste0(
             "Win Shares: ", sum(tmp$`Win Shares`),
